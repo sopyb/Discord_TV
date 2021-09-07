@@ -1,24 +1,50 @@
 package ro.sopy.discordtv.adapters
 
+import android.app.Activity
+import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
+import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.functions.Consumer
 import ro.sopy.discordtv.R
+import ro.sopy.discordtv.activities.DebugActivity
+import ro.sopy.discordtv.activities.MainActivity
 import ro.sopy.discordtv.debuging.Debug
 import ro.sopy.discordtv.debuging.DebugEntry
 import ro.sopy.discordtv.debuging.DebugPriority
+import android.os.Looper
 
-class DebugRecyclerViewAdapter(minPriority: DebugPriority): RecyclerView.Adapter<DebugRecyclerViewAdapter.Companion.DebugViewHolder>() {
-    private var cacheLog = Debug.getEntries(minPriority)
 
-    fun changePriority(minPriority: DebugPriority) {
-        this.cacheLog = Debug.getEntries(minPriority)
+
+
+class DebugRecyclerViewAdapter(private var minPriority: DebugPriority): RecyclerView.Adapter<DebugRecyclerViewAdapter.Companion.DebugViewHolder>() {
+    private var cachedData = Debug.entryList.value
+    private var currentData = cachedData.filter { it.priority <= minPriority }
+
+    init {
+        Debug.entryList.subscribe {
+            Handler(Looper.getMainLooper()).post(Runnable {
+                cachedData = it
+
+                updateData()
+            })
+        }
+    }
+
+    private fun updateData() {
+        currentData = cachedData.filter { it.priority <= minPriority }
 
         this.notifyDataSetChanged()
+    }
+
+    fun changePriority(minPriority: DebugPriority) {
+        this.minPriority = minPriority
+
+        updateData()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DebugViewHolder {
@@ -27,11 +53,11 @@ class DebugRecyclerViewAdapter(minPriority: DebugPriority): RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(holder: DebugViewHolder, position: Int) {
-        holder.bind(cacheLog[position])
+        holder.bind(currentData[position])
     }
 
     override fun getItemCount(): Int {
-        return cacheLog.size
+        return currentData.size
     }
 
     companion object {

@@ -28,6 +28,7 @@ class DebugActivity : AppCompatActivity(), RadioGroup.OnCheckedChangeListener {
 
         val llm = LinearLayoutManager(this)
         llm.orientation = LinearLayoutManager.VERTICAL
+        llm.stackFromEnd = true
         recyclerView.layoutManager = llm
         recyclerView.adapter = this.adapter
         radioGroup.setOnCheckedChangeListener(this)
@@ -37,7 +38,6 @@ class DebugActivity : AppCompatActivity(), RadioGroup.OnCheckedChangeListener {
      * OnCheckedChangeListener callback overwrites
      */
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
-        Debug.log("CheckedCHanged", DebugPriority.DEBUG, "DebugActivity")
         when (checkedId) {
             R.id.noPriorityRadioButton -> adapter.changePriority(DebugPriority.NO_PRIORITY)
             R.id.debugPriorityRadioButton -> adapter.changePriority(DebugPriority.DEBUG)

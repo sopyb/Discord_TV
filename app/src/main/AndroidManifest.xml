@@ -23,7 +23,7 @@
             android:theme="@style/Theme.DiscordTV.NoActionBar"
             android:exported="true" />
         <!--
-                android:banner="TODO"
+                android:banner="TO DO"
         android:fullBackupContent=""
         -->
         <activity
