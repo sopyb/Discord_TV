@@ -1,13 +1,9 @@
-package ro.sopy.discordtv
+package ro.sopy.discordtv.activities
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import ro.sopy.discordtv.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

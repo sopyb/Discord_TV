@@ -4,13 +4,12 @@ import android.util.Log
 
 class Debug {
     companion object {
-            private val entryList = ArrayList<DebugEntry>()
-
+        private val entryList = ArrayList<DebugEntry>()
 
         fun log(message: String,
                 priority: DebugPriority = DebugPriority.NO_PRIORITY,
                 title: String = "UndefinedClass") {
-            entryList.add(DebugEntry(message, priority))
+            entryList.add(DebugEntry(message, priority, title))
 
             //ADB can't handle titles longer than 23 characters
             val formattedTitle = title.take(23)

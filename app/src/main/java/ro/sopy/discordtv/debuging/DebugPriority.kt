@@ -6,5 +6,10 @@ enum class DebugPriority {
     WARNING,
     INFO,
     DEBUG,
-    NO_PRIORITY
+    NO_PRIORITY;
+
+    companion object {
+        private val VALUES = values()
+        fun getByValue(value: Int) = VALUES.firstOrNull { it as Int == value }
+    }
 }

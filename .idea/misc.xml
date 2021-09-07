@@ -6,8 +6,10 @@
         <entry key="../../../../layout/custom_preview.xml" value="0.10052083333333334" />
         <entry key="app/src/main/res/drawable/circle.xml" value="0.13645833333333332" />
         <entry key="app/src/main/res/drawable/roundimage.xml" value="0.13645833333333332" />
+        <entry key="app/src/main/res/layout/activity_debug.xml" value="0.46846846846846846" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/debug_log_entry.xml" value="0.1591710758377425" />
       </map>
     </option>
   </component>

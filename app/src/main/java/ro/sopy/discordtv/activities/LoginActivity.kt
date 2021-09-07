@@ -1,9 +1,11 @@
-package ro.sopy.discordtv
+package ro.sopy.discordtv.activities
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -14,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.squareup.picasso.Picasso
+import ro.sopy.discordtv.LoginViewModel
+import ro.sopy.discordtv.R
 import ro.sopy.discordtv.auth.LoginUser
 
 class LoginActivity : AppCompatActivity() {
@@ -22,6 +26,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var usernameField: TextView
     private lateinit var loadingBar: ProgressBar
     private lateinit var loginModal: ConstraintLayout
+
+    private lateinit var debugButton: Button
 
     /**
      * Util functions
@@ -103,6 +109,9 @@ class LoginActivity : AppCompatActivity() {
         usernameField = findViewById(R.id.userName)
         loadingBar = findViewById(R.id.QrLoading)
         loginModal = findViewById(R.id.loginModal)
+
+        debugButton = findViewById(R.id.debugButton)
+        debugButton.setOnClickListener { startActivity(Intent(this, DebugActivity::class.java)) }
 
         val viewModel: LoginViewModel by viewModels()
 
