@@ -1,5 +1,6 @@
 package ro.sopy.discordtv.activities
 
+import android.animation.Animator
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -34,13 +35,33 @@ class LoginActivity : AppCompatActivity() {
      * Util functions
      */
     private fun changeVisibility(state: CurrentlyVisible) {
-        this.loadingBar.visibility = View.GONE
+        this.loadingBar.alpha
         this.qrImageView.visibility = View.GONE
         this.loginModal.visibility = View.GONE
-        when (state) {
-            CurrentlyVisible.LOADING_QR -> this.loadingBar.visibility = View.VISIBLE
-            CurrentlyVisible.SHOW_QR -> this.qrImageView.visibility = View.VISIBLE
-            CurrentlyVisible.SHOW_USER -> this.loginModal.visibility = View.VISIBLE
+
+        val listener = object:Animator.AnimatorListener {
+            override fun onAnimationCancel(animation: Animator?) {}
+            override fun onAnimationRepeat(animation: Animator?) {}
+            override fun onAnimationStart(animation: Animator?) {}
+            override fun onAnimationEnd(animation: Animator?) {
+                when (state) {
+                    CurrentlyVisible.LOADING_QR ->
+                        loadingBar.animate().alpha(1F).setDuration(250).start()
+                    CurrentlyVisible.SHOW_QR ->
+                        qrImageView.animate().alpha(1F).setDuration(250).start()
+                    CurrentlyVisible.SHOW_USER ->
+                        loginModal.animate().alpha(1F).setDuration(250).start()
+                }
+            }
+        }
+
+        when(1.0F) {
+            loadingBar.alpha ->
+                loadingBar.animate().alpha(0F).setDuration(250).setListener(listener).start()
+            qrImageView.alpha ->
+                qrImageView.animate().alpha(0F).setDuration(250).setListener(listener).start()
+            loginModal.alpha ->
+                loginModal.animate().alpha(0F).setDuration(250).setListener(listener).start()
         }
     }
 
