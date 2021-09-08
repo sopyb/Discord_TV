@@ -1,37 +1,29 @@
 package ro.sopy.discordtv.adapters
 
-import android.app.Activity
 import android.os.Handler
-import android.util.Log
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import io.reactivex.rxjava3.core.Observer
-import io.reactivex.rxjava3.functions.Consumer
 import ro.sopy.discordtv.R
-import ro.sopy.discordtv.activities.DebugActivity
-import ro.sopy.discordtv.activities.MainActivity
 import ro.sopy.discordtv.debuging.Debug
 import ro.sopy.discordtv.debuging.DebugEntry
 import ro.sopy.discordtv.debuging.DebugPriority
-import android.os.Looper
-
-
 
 
 class DebugRecyclerViewAdapter(private var minPriority: DebugPriority): RecyclerView.Adapter<DebugRecyclerViewAdapter.Companion.DebugViewHolder>() {
-    private var cachedData = Debug.entryList.value
+    private var cachedData = Debug.entryList.value!!.reversed()
     private var currentData = cachedData.filter { it.priority <= minPriority }
 
     init {
         Debug.entryList.subscribe {
-            Handler(Looper.getMainLooper()).post(Runnable {
-                cachedData = it
+            Handler(Looper.getMainLooper()).post {
+                cachedData = it.reversed()
 
                 updateData()
-            })
+            }
         }
     }
 
