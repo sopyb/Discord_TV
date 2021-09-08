@@ -73,7 +73,6 @@ class QrAuth(private val listener: QrAuthListener): WebSocketAdapter() {
             Thread.sleep(500)
 
             if (ws == null || !ws.isOpen) return
-
             val currentTime = System.currentTimeMillis().toInt()
             val passedTime = currentTime - lastHeartBeat
 

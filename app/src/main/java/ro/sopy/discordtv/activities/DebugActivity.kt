@@ -1,13 +1,12 @@
 package ro.sopy.discordtv.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.RadioGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ro.sopy.discordtv.R
 import ro.sopy.discordtv.adapters.DebugRecyclerViewAdapter
-import ro.sopy.discordtv.debuging.Debug
 import ro.sopy.discordtv.debuging.DebugPriority
 
 class DebugActivity : AppCompatActivity(), RadioGroup.OnCheckedChangeListener {
@@ -47,8 +46,6 @@ class DebugActivity : AppCompatActivity(), RadioGroup.OnCheckedChangeListener {
             R.id.criticalPriorityRadioButton -> adapter.changePriority(DebugPriority.CRITICAL)
             else -> throw IllegalArgumentException("Unknown button pressed")
         }
-
-//        radioGroup.check(checkedId)
     }
 
 
