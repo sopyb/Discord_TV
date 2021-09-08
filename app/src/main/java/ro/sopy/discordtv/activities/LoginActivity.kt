@@ -1,10 +1,8 @@
 package ro.sopy.discordtv.activities
 
-import android.animation.Animator
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -35,33 +33,25 @@ class LoginActivity : AppCompatActivity() {
      * Util functions
      */
     private fun changeVisibility(state: CurrentlyVisible) {
-        this.loadingBar.alpha
-        this.qrImageView.visibility = View.GONE
-        this.loginModal.visibility = View.GONE
-
-        val listener = object:Animator.AnimatorListener {
-            override fun onAnimationCancel(animation: Animator?) {}
-            override fun onAnimationRepeat(animation: Animator?) {}
-            override fun onAnimationStart(animation: Animator?) {}
-            override fun onAnimationEnd(animation: Animator?) {
-                when (state) {
-                    CurrentlyVisible.LOADING_QR ->
-                        loadingBar.animate().alpha(1F).setDuration(250).start()
-                    CurrentlyVisible.SHOW_QR ->
-                        qrImageView.animate().alpha(1F).setDuration(250).start()
-                    CurrentlyVisible.SHOW_USER ->
-                        loginModal.animate().alpha(1F).setDuration(250).start()
-                }
+        val onAnimationEnd = Runnable {
+            when (state) {
+                CurrentlyVisible.LOADING_QR ->
+                    loadingBar.animate().alpha(1F).setDuration(250)
+                CurrentlyVisible.SHOW_QR ->
+                    qrImageView.animate().alpha(1F).setDuration(250)
+                CurrentlyVisible.SHOW_USER ->
+                    loginModal.animate().alpha(1F).setDuration(250)
             }
         }
 
-        when(1.0F) {
-            loadingBar.alpha ->
-                loadingBar.animate().alpha(0F).setDuration(250).setListener(listener).start()
-            qrImageView.alpha ->
-                qrImageView.animate().alpha(0F).setDuration(250).setListener(listener).start()
-            loginModal.alpha ->
-                loginModal.animate().alpha(0F).setDuration(250).setListener(listener).start()
+        when {
+            loadingBar.alpha == 1F ->
+                loadingBar.animate().alpha(0F).setDuration(250).withEndAction(onAnimationEnd)
+            qrImageView.alpha == 1F ->
+                qrImageView.animate().alpha(0F).setDuration(250).withEndAction(onAnimationEnd)
+            loginModal.alpha == 1F ->
+                loginModal.animate().alpha(0F).setDuration(250).withEndAction(onAnimationEnd)
+            else -> onAnimationEnd.run()
         }
     }
 
@@ -130,6 +120,10 @@ class LoginActivity : AppCompatActivity() {
 
         debugButton = findViewById(R.id.debugButton)
         debugButton.setOnClickListener { startActivity(Intent(this, DebugActivity::class.java)) }
+
+        loadingBar.alpha = 0F
+        qrImageView.alpha = 0F
+        loginModal.alpha = 0F
 
         val viewModel: LoginViewModel by viewModels()
 
