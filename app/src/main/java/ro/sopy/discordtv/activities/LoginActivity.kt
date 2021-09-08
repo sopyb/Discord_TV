@@ -19,6 +19,8 @@ import com.squareup.picasso.Picasso
 import ro.sopy.discordtv.LoginViewModel
 import ro.sopy.discordtv.R
 import ro.sopy.discordtv.auth.LoginUser
+import ro.sopy.discordtv.debuging.Debug
+import ro.sopy.discordtv.debuging.DebugPriority
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var qrImageView: ImageView
@@ -44,7 +46,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun qrUpdate(url: String?) {
-        Log.d("LoginActivity", "qrUpdate started with $url")
         if (url != null) {
             val qr = QRGEncoder(
                 url,
@@ -71,24 +72,21 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun userUpdate(user: LoginUser?) {
-        Log.d("LoginActivity", "userUpdate started")
         when {
             user == null -> return
             user.token.isNotEmpty() -> {
-                Log.d("LoginActivity", "successfully authenticated")
+                Debug.log("Successfully authenticated", DebugPriority.INFO, "LoginActivity")
                 /**
                  * TODO successful login
                  */
             }
             user.token.isEmpty() -> {
                 //user scan case
-                Log.d("LoginActivity", "userUpdate started ")
+                changeVisibility(CurrentlyVisible.SHOW_USER)
                 usernameField.text = getString(R.string.userTag, user.username, user.discriminator)
 
-                changeVisibility(CurrentlyVisible.SHOW_USER)
-
                 Picasso.get()
-                    .load("https://cdn.discordapp.com/avatars/${user.userId}/${user.avatarHash}.png")
+                    .load(user.avatarUrl)
                     .placeholder(R.drawable.avatar_placeholder)
                     .error(R.drawable.avatar_placeholder)
                     .into(this.avatarImageView)
